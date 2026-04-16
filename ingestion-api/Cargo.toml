@@ -1,0 +1,11 @@
+[package]
+name = "ingestion-api"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+hyper = { version = "1", features = ["http2", "server"] }
+hyper-util = { version = "0.1", features = ["tokio", "server", "http1", "http2"] }
+http-body-util = "0.1"
+bytes = "1"

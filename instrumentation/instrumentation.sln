@@ -1,0 +1,30 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Instrumentation", "Instrumentation.csproj", "{5FA4430E-60ED-47C2-6B1C-5C690708D4F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpLogger", "HttpLogger\HttpLogger.csproj", "{F2A09A79-D86F-4462-B645-1A69C45CC020}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5FA4430E-60ED-47C2-6B1C-5C690708D4F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FA4430E-60ED-47C2-6B1C-5C690708D4F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FA4430E-60ED-47C2-6B1C-5C690708D4F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FA4430E-60ED-47C2-6B1C-5C690708D4F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2A09A79-D86F-4462-B645-1A69C45CC020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2A09A79-D86F-4462-B645-1A69C45CC020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2A09A79-D86F-4462-B645-1A69C45CC020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2A09A79-D86F-4462-B645-1A69C45CC020}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6D4F2868-7F21-49C1-AB17-6C3AA705C349}
+	EndGlobalSection
+EndGlobal

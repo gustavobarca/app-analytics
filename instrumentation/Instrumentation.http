@@ -1,0 +1,53 @@
+@InstrumentationTest_HostAddress = http://localhost:5137
+
+### GET hello
+GET {{InstrumentationTest_HostAddress}}/
+Accept: application/json
+
+###
+
+### POST hello with body
+POST {{InstrumentationTest_HostAddress}}/
+Content-Type: application/json
+
+{
+  "name": "Gustavo"
+}
+
+###
+
+### GET weather forecast
+GET {{InstrumentationTest_HostAddress}}/weatherforecast
+Accept: application/json
+
+###
+
+### GET all posts (external - success, logs essential only)
+GET {{InstrumentationTest_HostAddress}}/external/posts
+Accept: application/json
+
+###
+
+### GET single post (external - success, logs essential only)
+GET {{InstrumentationTest_HostAddress}}/external/posts/1
+Accept: application/json
+
+###
+
+### POST new post (external - success, logs essential only)
+POST {{InstrumentationTest_HostAddress}}/external/posts
+Content-Type: application/json
+
+{
+  "title": "Test Post",
+  "body": "Hello from HttpLogger",
+  "userId": 1
+}
+
+###
+
+### GET non-existent post (external - 404, logs full request + response)
+GET {{InstrumentationTest_HostAddress}}/external/not-found
+Accept: application/json
+
+###
