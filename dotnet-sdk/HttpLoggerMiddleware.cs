@@ -1,5 +1,5 @@
-using System.Buffers;
 using System.Diagnostics;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 
@@ -13,6 +13,7 @@ internal sealed class HttpLoggerMiddleware(RequestDelegate next, LogSender sende
 
         CapturingStream? capture = null;
         var originalBody = context.Response.Body;
+        Exception? failure = null;
 
         context.Response.OnStarting(() =>
         {
@@ -26,88 +27,29 @@ internal sealed class HttpLoggerMiddleware(RequestDelegate next, LogSender sende
 
         var start = Stopwatch.GetTimestamp();
 
-        await next(context);
-
-        var elapsed = Stopwatch.GetElapsedTime(start).TotalMilliseconds;
-        var req = context.Request;
-        var res = context.Response;
-        var url = $"{req.Scheme}://{req.Host}{req.Path}{req.QueryString}";
-
-        if (capture is not null)
-        {
-            context.Response.Body = originalBody;
-
-            req.Body.Position = 0;
-            var requestBody = await ReadBodyAsync(req.Body, context.RequestAborted);
-            var responseBody = capture.GetBodyAsString();
-
-            sender.Ship(new LogEntry(
-                DateTimeOffset.UtcNow,
-                "Inbound",
-                req.Method,
-                url,
-                res.StatusCode,
-                elapsed,
-                FormatRequest(req, requestBody),
-                FormatResponse(res, responseBody)));
-        }
-        else
-        {
-            sender.Ship(new LogEntry(
-                DateTimeOffset.UtcNow,
-                "Inbound",
-                req.Method,
-                url,
-                res.StatusCode,
-                elapsed));
-        }
-    }
-
-    private static string FormatRequest(HttpRequest request, string body)
-    {
-        var sb = new StringBuilder();
-        sb.AppendLine($"{request.Method} {request.Path}{request.QueryString} HTTP/1.1");
-        sb.AppendLine($"Host: {request.Host}");
-        foreach (var (key, value) in request.Headers)
-            sb.AppendLine($"{key}: {value}");
-        if (!string.IsNullOrWhiteSpace(body))
-        {
-            sb.AppendLine();
-            sb.Append(body);
-        }
-        return sb.ToString();
-    }
-
-    private static string FormatResponse(HttpResponse response, string body)
-    {
-        var sb = new StringBuilder();
-        sb.AppendLine($"HTTP/1.1 {response.StatusCode}");
-        foreach (var (key, value) in response.Headers)
-            sb.AppendLine($"{key}: {value}");
-        if (!string.IsNullOrWhiteSpace(body))
-        {
-            sb.AppendLine();
-            sb.Append(body);
-        }
-        return sb.ToString();
-    }
-
-    private static async ValueTask<string> ReadBodyAsync(Stream body, CancellationToken ct)
-    {
-        if (body.Length == 0)
-            return string.Empty;
-
-        var length = (int)body.Length;
-        var buffer = ArrayPool<byte>.Shared.Rent(length);
         try
         {
-            var read = await body.ReadAsync(buffer.AsMemory(0, length), ct);
-            return Encoding.UTF8.GetString(buffer, 0, read);
+            await next(context);
+        }
+        catch (Exception ex)
+        {
+            failure = ex;
         }
         finally
         {
-            ArrayPool<byte>.Shared.Return(buffer);
+            if (capture is not null)
+                context.Response.Body = originalBody;
         }
+
+        var elapsed = Stopwatch.GetElapsedTime(start).TotalMilliseconds;
+        if (failure is null && context.Response.StatusCode < 400)
+            return;
+
+        var responseBody = capture?.GetBodyAsString();
+        sender.Ship(HttpLoggerLog.CreateInbound(context, elapsed, responseBody, failure));
+
+        if (failure is not null)
+            ExceptionDispatchInfo.Capture(failure).Throw();
     }
 
     private sealed class CapturingStream(Stream inner) : Stream

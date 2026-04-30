@@ -1,12 +1,12 @@
 namespace HttpLogger;
 
-internal sealed record LogEntry(
+public sealed record LogEntry(
     DateTimeOffset Timestamp,
     string Direction,
     string Method,
     string Url,
     int StatusCode,
     double ElapsedMs,
-    string? Request = null,
-    string? Response = null
+    string? Response = null,
+    string? Error = null
 );

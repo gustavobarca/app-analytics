@@ -1,0 +1,26 @@
+received batch: 2 entries
+[
+  {
+    "timestamp": "2026-04-30T22:35:33.9516764+00:00",
+    "direction": "Outbound",
+    "method": "GET",
+    "url": "https://jsonplaceholder.typicode.com/posts/99999999",
+    "statusCode": 404,
+    "elapsedMs": 44.2564,
+    "request": "GET https://jsonplaceholder.typicode.com/posts/99999999 HTTP/1.1\ntraceparent: 00-ef429c4945075b32330429385025eb66-53b99bdcaf9d57e0-00\n",
+    "response": "HTTP/1.1 404 Not Found\nDate: Thu, 30 Apr 2026 22:35:33 GMT\nConnection: keep-alive\nAccess-Control-Allow-Credentials: true\nCache-Control: max-age=43200\nETag: W/\"2-vyGp6PvFo4RvsFtPoIWeCReyIC8\"\nnel: {\"report_to\":\"heroku-nel\",\"response_headers\":[\"Via\"],\"max_age\":3600,\"success_fraction\":0.01,\"failure_fraction\":0.1}\nPragma: no-cache\nreport-to: {\"group\":\"heroku-nel\",\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?s=GHLd%2Fv5Dr%2FpVLddzGTyh3rYOZeJsr8yHnxPsHjRr08s%3D\\u0026sid=e11707d5-02a7-43ef-b45e-2cf4d2036f7d\\u0026ts=1777585470\"}],\"max_age\":3600}\nreporting-endpoints: heroku-nel=\"https://nel.heroku.com/reports?s=GHLd%2Fv5Dr%2FpVLddzGTyh3rYOZeJsr8yHnxPsHjRr08s%3D&sid=e11707d5-02a7-43ef-b45e-2cf4d2036f7d&ts=1777585470\"\nServer: cloudflare\nVary: Origin, Accept-Encoding\nVia: 2.0 heroku-router\nX-Content-Type-Options: nosniff\nX-Powered-By: Express\nx-ratelimit-limit: 1000\nx-ratelimit-remaining: 999\nx-ratelimit-reset: 1777585505\nAge: 3063\ncf-cache-status: HIT\nServer-Timing: cfCacheStatus;desc=\"HIT\", cfEdge;dur=4,cfOrigin;dur=0\nCF-RAY: 9f4a05311beee1ab-GRU\nAlt-Svc: h3=\":443\"\nContent-Type: application/json; charset=utf-8\nContent-Length: 2\nExpires: -1\n\n{}",
+    "error": null
+  },
+  {
+    "timestamp": "2026-04-30T22:35:33.9518397+00:00",
+    "direction": "Inbound",
+    "method": "GET",
+    "url": "http://localhost:5137/external/not-found",
+    "statusCode": 404,
+    "elapsedMs": 44.8987,
+    "request": "GET /external/not-found HTTP/1.1\nHost: localhost:5137\nAccept: */*\nHost: localhost:5137\nUser-Agent: curl/8.18.0\n",
+    "response": "HTTP/1.1 404\nContent-Type: text/plain; charset=utf-8\nDate: Thu, 30 Apr 2026 22:35:33 GMT\nServer: Kestrel\nTransfer-Encoding: chunked\n\n{}",
+    "error": null
+  }
+]
+

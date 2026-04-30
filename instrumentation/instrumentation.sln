@@ -4,7 +4,7 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Instrumentation", "Instrumentation.csproj", "{5FA4430E-60ED-47C2-6B1C-5C690708D4F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpLogger", "HttpLogger\HttpLogger.csproj", "{F2A09A79-D86F-4462-B645-1A69C45CC020}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpLogger", "..\dotnet-sdk\HttpLogger.csproj", "{F2A09A79-D86F-4462-B645-1A69C45CC020}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

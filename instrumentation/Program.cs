@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
-builder.Services.AddHttpLoggerSink(new Uri("https://webhook.site/c3fc0cd9-c1fb-457c-a667-7fbb2d110a9b"));
+builder.Services.AddHttpLoggerSink(new Uri("http://127.0.0.1:7878/"));
 
 builder.Services.AddHttpClient("external", c =>
 {

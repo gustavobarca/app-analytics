@@ -13,10 +13,11 @@ public static class HttpLoggerExtensions
         {
             client.BaseAddress = endpoint;
             client.DefaultRequestVersion = HttpVersion.Version20;
-            client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower;
+            client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionExact;
         });
 
         services.TryAddSingleton<LogSender>();
+        services.AddHostedService(sp => sp.GetRequiredService<LogSender>());
 
         return services;
     }
