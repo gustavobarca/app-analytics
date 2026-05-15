@@ -9,6 +9,7 @@ const CLICKHOUSE_ADDR: &str = "127.0.0.1:9000";
 #[serde(rename_all = "camelCase")]
 struct IncomingLogEntry {
     timestamp: String,
+    request_id: String,
     direction: String,
     method: String,
     url: String,
@@ -21,6 +22,7 @@ struct IncomingLogEntry {
 #[derive(Debug, Clone, klickhouse::Row)]
 struct DbLogEntry {
     timestamp: String,
+    request_id: String,
     direction: String,
     method: String,
     url: String,
@@ -34,6 +36,7 @@ impl From<IncomingLogEntry> for DbLogEntry {
     fn from(entry: IncomingLogEntry) -> Self {
         Self {
             timestamp: entry.timestamp,
+            request_id: entry.request_id,
             direction: entry.direction,
             method: entry.method,
             url: entry.url,

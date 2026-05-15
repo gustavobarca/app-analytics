@@ -10,6 +10,7 @@ internal sealed class HttpLoggerMiddleware(RequestDelegate next, LogSender sende
     public async Task InvokeAsync(HttpContext context)
     {
         context.Request.EnableBuffering();
+        var requestId = HttpLoggerContext.GetOrCreateRequestId(context);
 
         CapturingStream? capture = null;
         var originalBody = context.Response.Body;
@@ -46,7 +47,7 @@ internal sealed class HttpLoggerMiddleware(RequestDelegate next, LogSender sende
             return;
 
         var responseBody = capture?.GetBodyAsString();
-        sender.Ship(HttpLoggerLog.CreateInbound(context, elapsed, responseBody, failure));
+        sender.Ship(HttpLoggerLog.CreateInbound(context, requestId, elapsed, responseBody, failure));
 
         if (failure is not null)
             ExceptionDispatchInfo.Capture(failure).Throw();

@@ -1,11 +1,13 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 
 namespace HttpLogger;
 
-internal sealed class HttpLoggerHandler(LogSender sender) : DelegatingHandler
+internal sealed class HttpLoggerHandler(LogSender sender, IHttpContextAccessor httpContextAccessor) : DelegatingHandler
 {
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
     {
+        var requestId = HttpLoggerContext.GetCurrentRequestId(httpContextAccessor);
         var start = Stopwatch.GetTimestamp();
 
         HttpResponseMessage response;
@@ -17,6 +19,7 @@ internal sealed class HttpLoggerHandler(LogSender sender) : DelegatingHandler
         {
             sender.Ship(HttpLoggerLog.CreateOutbound(
                 request,
+                requestId,
                 response: null,
                 Stopwatch.GetElapsedTime(start).TotalMilliseconds,
                 ex));
@@ -33,7 +36,7 @@ internal sealed class HttpLoggerHandler(LogSender sender) : DelegatingHandler
                 responseBody = await response.Content.ReadAsStringAsync(ct);
             }
 
-            sender.Ship(HttpLoggerLog.CreateOutbound(request, response, elapsed, null, responseBody));
+            sender.Ship(HttpLoggerLog.CreateOutbound(request, requestId, response, elapsed, null, responseBody));
         }
 
         return response;

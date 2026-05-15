@@ -5,7 +5,7 @@ namespace HttpLogger;
 
 internal static class HttpLoggerLog
 {
-    public static LogEntry CreateInbound(HttpContext context, double elapsedMs, string? responseBody, Exception? error)
+    public static LogEntry CreateInbound(HttpContext context, string requestId, double elapsedMs, string? responseBody, Exception? error)
     {
         var request = context.Request;
         var response = context.Response;
@@ -17,6 +17,7 @@ internal static class HttpLoggerLog
 
         return new LogEntry(
             DateTimeOffset.UtcNow,
+            requestId,
             "Inbound",
             request.Method,
             $"{request.Scheme}://{request.Host}{request.Path}{request.QueryString}",
@@ -26,10 +27,11 @@ internal static class HttpLoggerLog
             error?.ToString());
     }
 
-    public static LogEntry CreateOutbound(HttpRequestMessage request, HttpResponseMessage? response, double elapsedMs, Exception? error, string? responseBody = null)
+    public static LogEntry CreateOutbound(HttpRequestMessage request, string requestId, HttpResponseMessage? response, double elapsedMs, Exception? error, string? responseBody = null)
     {
         return new LogEntry(
             DateTimeOffset.UtcNow,
+            requestId,
             "Outbound",
             request.Method.Method,
             request.RequestUri?.ToString() ?? string.Empty,

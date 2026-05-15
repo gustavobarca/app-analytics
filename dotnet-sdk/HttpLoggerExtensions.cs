@@ -9,6 +9,7 @@ public static class HttpLoggerExtensions
 {
     public static IServiceCollection AddHttpLoggerSink(this IServiceCollection services, Uri endpoint)
     {
+        services.AddHttpContextAccessor();
         services.AddHttpClient(LogSender.ClientName, client =>
         {
             client.BaseAddress = endpoint;
